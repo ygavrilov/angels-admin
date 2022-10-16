@@ -8,27 +8,27 @@ use src\controllers\items;
 class App {
 
     private $routes = [
-        '/auth/login' => [
+        '/?q=auth/login' => [
             'controller'    => 'authorization',
             'action'        => 'login',
             'require_auth'  => false
         ],
-        '/items/list' => [
+        '/?q=items/list' => [
             'controller'    => 'items',
             'action'        => 'list',
             'require_auth'  => true
         ],
-        '/items/get-by-id/*' => [
+        '/?q=items/get-by-id/*' => [
             'controller'    => 'items',
             'action'        => 'get_by_id',
             'require_auth'  => true
         ],
-        '/items/create' => [
+        '/?q=items/create' => [
             'controller'    => 'items',
             'action'        => 'create',
             'require_auth'  => true
         ],
-        '/items/update' => [
+        '/?q=items/update' => [
             'controller'    => 'items',
             'action'        => 'update',
             'require_auth'  => true
@@ -65,7 +65,12 @@ class App {
         }
         if (array_key_exists($check_string, $this->routes) === false) 
         {
-            echo json_encode(['code' => 404, 'message' => 'route not found', 'check' => $check_string]);
+            echo json_encode([
+                'code' => 404, 
+                'message' => 'route not found', 
+                'check' => $check_string,
+                'available routes' => array_keys($this->routes)
+            ]);
             return;
         }
         
