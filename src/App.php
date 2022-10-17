@@ -16,12 +16,12 @@ class App {
         '/?q=items/list' => [
             'controller'    => 'items',
             'action'        => 'list',
-            'require_auth'  => true
+            'require_auth'  => false
         ],
         '/?q=items/get-by-id/*' => [
             'controller'    => 'items',
             'action'        => 'get_by_id',
-            'require_auth'  => true
+            'require_auth'  => false
         ],
         '/?q=items/create' => [
             'controller'    => 'items',
