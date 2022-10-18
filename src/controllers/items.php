@@ -7,6 +7,8 @@ class items {
     private $items = [];
 
     private $items_file_name = '../storage/items.json';
+    private $images_foler_prfix = '../webroot/';
+    private $images_folder = 'images';
 
     private $model = [
         'name' => FILTER_SANITIZE_STRING,
@@ -125,6 +127,13 @@ class items {
             }
         }
         $new_record['id'] = $max_id + 1;
+        
+
+        if (!empty($_FILES) && $_FILES['file']['error'] == 0)
+        {
+            $new_record['img'][] = $this->upload_image($_FILES['file'], $new_record['id']);
+        }
+
         $this->items[$new_record['id']] = $new_record;
         file_put_contents($this->items_file_name, json_encode($this->items));
 
@@ -136,6 +145,21 @@ class items {
             ]
         );
         return;
+    }
+
+    public function upload_image($file, $id)
+    {
+        //  upload image, put it in img array
+        $image_name = 
+            $this->images_folder .
+            '/' .
+            "items-$id-" . 
+            hash_hmac('sha256', time(), 'items') . 
+            '.' .
+            substr($file['name'], strpos($file['name'], '.') + 1)
+        ;
+        move_uploaded_file($file['tmp_name'], $this->images_foler_prfix . $image_name);
+        return $image_name;
     }
 
 }
