@@ -79,16 +79,77 @@ class items {
 
     public function update()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'PATCH') 
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') 
         {
             echo json_encode(
                 [
                     'code'      => 400,
-                    'message'   => 'Only PATCH request is accepted'
+                    'message'   => 'Only POST request is accepted'
                 ]
             );
             return;
         }
+
+        //  id must be present 
+        //  data must be cleaned
+        //  files need to be uploaded
+
+        if (array_key_exists('id', $_POST) === false)
+        {
+            echo json_encode(
+                [
+                    'code'      => 400,
+                    'message'   => 'id must be present'
+                ]
+            );
+            return;
+        }
+
+        $item_to_edit = null;
+        foreach ($this->items as $item_index => $item) 
+        {
+            if ($item->id == $_POST['id'])
+            {
+                $item_to_edit = $item;
+                break;
+            }
+        }
+
+        if (empty($item_to_edit))
+        {
+            echo json_encode(
+                [
+                    'code'      => 400,
+                    'message'   => 'item not found'
+                ]
+            );
+            return;
+        }
+
+        $item_to_edit = (array) $item_to_edit;
+        foreach ($this->model as $field_name => $field_filter)
+        {
+            if (array_key_exists($field_name, $_POST) === false) {
+                continue;
+            }
+            $item_to_edit[$field_name] = filter_var($_POST[$field_name], $field_filter);
+        }
+        
+        if (!empty($_FILES) && $_FILES['file']['error'] == 0)
+        {
+            $item_to_edit['img'][] = $this->upload_image($_FILES['file'], $item_to_edit['id']);
+        }
+
+        $this->items[$item_index] = $item_to_edit;
+        file_put_contents($this->items_file_name, json_encode($this->items));
+
+        echo json_encode(
+            [
+                'code'      => 200,
+                'message'   => 'Record successfully updated'
+            ]
+        );
+        return;
     }
 
     public function create()
