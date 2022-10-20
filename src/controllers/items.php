@@ -21,7 +21,7 @@ class items {
     {
         //  initialize items
         header('Content-Type:application/json');
-        $this->items = (array)json_decode(file_get_contents($this->items_file_name));
+        $this->items = json_decode(file_get_contents($this->items_file_name), true);
     }
 
     public function list()
@@ -56,12 +56,12 @@ class items {
 
         foreach ($this->items as $item)
         {
-            if ($item->id == $id) {
+            if ($item['id'] == $id) {
                 break;
             }
         }
 
-        if ($item->id != $id)
+        if ($item['id'] != $id)
         {
             echo json_encode([
                 "code"      => 400,
@@ -108,7 +108,7 @@ class items {
         $item_to_edit = null;
         foreach ($this->items as $item_index => $item) 
         {
-            if ($item->id == $_POST['id'])
+            if ($item['id'] == $_POST['id'])
             {
                 $item_to_edit = $item;
                 break;
@@ -182,9 +182,9 @@ class items {
         $max_id = 1;
         foreach ($this->items as $item) 
         {
-            if ($item->id > $max_id) 
+            if ($item['id'] > $max_id) 
             {
-                $max_id = $item->id;
+                $max_id = $item['id'];
             }
         }
         $new_record['id'] = $max_id + 1;
@@ -221,6 +221,69 @@ class items {
         ;
         move_uploaded_file($file['tmp_name'], $this->images_foler_prfix . $image_name);
         return $image_name;
+    }
+
+    public function remove_image($image_file_name)
+    {
+        //  loop through items to find the image 
+        //  delete 
+        //  update 
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') 
+        {
+            echo json_encode(
+                [
+                    'code'      => 400,
+                    'message'   => 'Only POST request is accepted'
+                ]
+            );
+            return;
+        }
+
+        $item_index = null;
+        foreach ($this->items as $index => $item)
+        {
+            if (in_array($image_file_name, $item['img'])) {
+                $item_index = $index;
+            }
+        }
+
+        if (empty($item_index))
+        {
+            echo json_encode(
+                [
+                    'code'          => 400,
+                    'message'       => 'image not found',
+                    'file'          => $image_file_name,
+                    'item'          => $item['img']
+                ]
+            );
+            return;
+        }
+
+        try {
+            unlink($image_file_name);
+        } catch (Exception $e) {
+            echo json_encode(
+                [
+                    'code'          => 500,
+                    'message'       => 'something went wrong',
+                    'new_record'    => $e
+                ]
+            );
+            return;
+        }
+
+        unset($this->items[$item_index]['img'][array_search($image_file_name, $this->items[$item_index]['img'])]);
+        file_put_contents($this->items_file_name, json_encode($this->items));
+
+        echo json_encode(
+            [
+                'code'          => 201,
+                'message'       => 'image deleted'
+            ]
+        );
+        return;
     }
 
 }

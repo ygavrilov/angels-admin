@@ -33,6 +33,11 @@ class App {
             'action'        => 'update',
             'require_auth'  => true
         ],
+        '/?q=items/remove-image/*' => [
+            'controller'    => 'items',
+            'action'        => 'remove_image',
+            'require_auth'  => true
+        ],
     ];
 
     private $controllers;
@@ -57,11 +62,14 @@ class App {
 
         $request_route_array = explode('/', $_SERVER['REQUEST_URI']);
         $check_string = '/' . $request_route_array[1] . '/' . $request_route_array[2];
-        $param = null;
+        $params = null;
         if (array_key_exists(3, $request_route_array)) 
         {
             $check_string .= '/*';
-            $param = (int)$request_route_array[3];
+            unset($request_route_array[0]);
+            unset($request_route_array[1]);
+            unset($request_route_array[2]);
+            $param = implode('/', $request_route_array);
         }
         if (array_key_exists($check_string, $this->routes) === false) 
         {
