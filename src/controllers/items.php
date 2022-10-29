@@ -7,7 +7,7 @@ class items {
     private $items = [];
 
     private $items_file_name = '../storage/items.json';
-    private $images_foler_prfix = '../webroot/';
+    private $images_foler_prefix = '../webroot/';
     private $images_folder = 'images';
 
     private $model = [
@@ -214,12 +214,12 @@ class items {
         $image_name = 
             $this->images_folder .
             '/' .
-            "items-$id-" . 
-            hash_hmac('sha256', time(), 'items') . 
+            "{$this->model_alias}-$id-" . 
+            hash_hmac('sha256', time(), $this->model_alias) . 
             '.' .
             substr($file['name'], strpos($file['name'], '.') + 1)
         ;
-        move_uploaded_file($file['tmp_name'], $this->images_foler_prfix . $image_name);
+        move_uploaded_file($file['tmp_name'], $this->images_foler_prefix . $image_name);
         return $image_name;
     }
 
