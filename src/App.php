@@ -13,6 +13,11 @@ class App {
             'action'        => 'login',
             'require_auth'  => false
         ],
+        /**
+         * 
+         * routes for items
+         * 
+         */
         '/?q=items/list' => [
             'controller'    => 'items',
             'action'        => 'list',
@@ -35,6 +40,38 @@ class App {
         ],
         '/?q=items/remove-image/*' => [
             'controller'    => 'items',
+            'action'        => 'remove_image',
+            'require_auth'  => true
+        ],
+
+        /**
+         * 
+         * routes for peppers
+         * 
+         */
+
+        '/?q=peppers/list' => [
+            'controller'    => 'peppers',
+            'action'        => 'list',
+            'require_auth'  => false
+        ],
+        '/?q=peppers/get-by-id/*' => [
+            'controller'    => 'peppers',
+            'action'        => 'get_by_id',
+            'require_auth'  => false
+        ],
+        '/?q=peppers/create' => [
+            'controller'    => 'peppers',
+            'action'        => 'create',
+            'require_auth'  => true
+        ],
+        '/?q=peppers/update' => [
+            'controller'    => 'peppers',
+            'action'        => 'update',
+            'require_auth'  => true
+        ],
+        '/?q=peppers/remove-image/*' => [
+            'controller'    => 'peppers',
             'action'        => 'remove_image',
             'require_auth'  => true
         ],
@@ -69,7 +106,7 @@ class App {
             unset($request_route_array[0]);
             unset($request_route_array[1]);
             unset($request_route_array[2]);
-            $param = implode('/', $request_route_array);
+            $params = implode('/', $request_route_array);
         }
         if (array_key_exists($check_string, $this->routes) === false) 
         {
