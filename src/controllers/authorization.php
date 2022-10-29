@@ -22,7 +22,8 @@ class authorization {
             echo json_encode(
                 [
                     'code'      => 400,
-                    'message'   => 'Only POST request is accepted'
+                    'message'   => 'Only POST request is accepted',
+                    'mothod'    => $_SERVER['REQUEST_METHOD']
                 ]
             );
             return;

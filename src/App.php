@@ -96,7 +96,7 @@ class App {
         $this
             ->controllers
             ->{$this->routes[$check_string]['controller']}
-            ->{$this->routes[$check_string]['action']}($param)
+            ->{$this->routes[$check_string]['action']}($params)
         ;
     }
 }
