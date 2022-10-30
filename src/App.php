@@ -13,6 +13,11 @@ class App {
             'action'        => 'login',
             'require_auth'  => false
         ],
+        '/?q=auth/check' => [
+            'controller'    => 'authorization',
+            'action'        => 'check_auth',
+            'require_auth'  => false
+        ],
         /**
          * 
          * routes for items
