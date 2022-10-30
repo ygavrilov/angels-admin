@@ -95,7 +95,8 @@ class authorization {
         {
             echo json_encode([
                 'code'      => 403,
-                'message'   => 'Token not present'
+                'message'   => 'Token not present',
+                'server'    => $_SERVER
             ]);
             return false;
         }
