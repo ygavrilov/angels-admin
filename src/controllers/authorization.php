@@ -128,10 +128,21 @@ class authorization {
         // verify it matches the signature provided in the jwt
         $is_signature_valid = ($base64_url_signature === $signature_provided);
         
-        if (!$is_signature_valid || $is_token_expired) {
+        if (!$is_signature_valid || $is_token_expired) 
+        {
+            echo json_encode([
+                'code'      => 403,
+                'message'   => 'Token not valid'
+            ]);
             return FALSE;
-        } else {
+        } else 
+        {
+            echo json_encode([
+                'code'      => 200,
+                'message'   => 'Token valid'
+            ]);
             return TRUE;
         }
     }
+    
 }
