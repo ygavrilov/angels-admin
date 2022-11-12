@@ -106,7 +106,7 @@ class authorization {
                 'code'      => 200,
                 'message'   => 'Token valid'
             ]);
-            return
+            return;
         } 
         
         echo json_encode([
