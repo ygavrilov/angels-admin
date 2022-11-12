@@ -126,7 +126,7 @@ class App {
         
         if ($this->routes[$check_string]['require_auth'])
         {
-            $auth_result = $this->controllers->authorization->check_auth();
+            $auth_result = $this->controllers->authorization->check_token();
             if (!$auth_result) 
             {
                 echo json_encode(['code' => 403, 'message' => 'not authorized', 'auth' => $auth_result]);

@@ -95,20 +95,34 @@ class authorization {
         {
             echo json_encode([
                 'code'      => 403,
-                'message'   => 'Token not present',
-                'server'    => $_SERVER
+                'message'   => 'Token not present'
             ]);
-            return false;
+            return;
         }
+        
+        if ($this->check_token()) 
+        {
+            echo json_encode([
+                'code'      => 200,
+                'message'   => 'Token valid'
+            ]);
+            return
+        } 
+        
+        echo json_encode([
+            'code'      => 403,
+            'message'   => 'Token not valid'
+        ]);
+        return;
+    }
+
+    public function check_token()
+    {
         $jwt = str_replace('Bearer ', '', $_SERVER['HTTP_AUTHORIZATION']);
         // split the jwt
         $token_parts = explode('.', $jwt);
         if (count($token_parts) != 3) 
         {
-            echo json_encode([
-                'code'      => 403,
-                'message'   => 'Token corrupted'
-            ]);
             return false;
         }
 
@@ -130,17 +144,9 @@ class authorization {
         
         if (!$is_signature_valid || $is_token_expired) 
         {
-            echo json_encode([
-                'code'      => 403,
-                'message'   => 'Token not valid'
-            ]);
             return FALSE;
         } else 
         {
-            echo json_encode([
-                'code'      => 200,
-                'message'   => 'Token valid'
-            ]);
             return TRUE;
         }
     }
