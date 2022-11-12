@@ -142,13 +142,12 @@ class authorization {
         // verify it matches the signature provided in the jwt
         $is_signature_valid = ($base64_url_signature === $signature_provided);
         
-        if (!$is_signature_valid || $is_token_expired) 
+        if ($is_signature_valid || !$is_token_expired) 
         {
-            return FALSE;
-        } else 
-        {
-            return TRUE;
+            return true;
         }
+
+        return false;
     }
     
 }
