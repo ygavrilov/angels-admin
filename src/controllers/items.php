@@ -330,7 +330,7 @@ class items {
         }
 
         $all_images_deleted = true;
-        foreach ($item_to_delete->img as $image_file_name)
+        foreach ($item_to_delete['img'] as $image_file_name)
         {
             try {
                 unlink($image_file_name);

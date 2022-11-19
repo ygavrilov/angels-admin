@@ -333,7 +333,7 @@ class peppers {
         }
 
         $all_images_deleted = true;
-        foreach ($pepper_to_delete->img as $image_file_name)
+        foreach ($pepper_to_delete['img'] as $image_file_name)
         {
             try {
                 unlink($image_file_name);
