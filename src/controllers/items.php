@@ -308,7 +308,7 @@ class items {
             return;
         }
 
-        $item_to_delete = null;
+        $item_to_delete = false;
         foreach ($this->items as $item_index => $item) 
         {
             if ($item['id'] == $_POST['id'])
@@ -318,7 +318,7 @@ class items {
             }
         }
 
-        if (empty($item_to_delete))
+        if ($item_to_delete === false)
         {
             echo json_encode([
                 'code'      => 400,

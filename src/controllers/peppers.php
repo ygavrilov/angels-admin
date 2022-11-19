@@ -311,7 +311,7 @@ class peppers {
             return;
         }
 
-        $pepper_to_delete = null;
+        $pepper_to_delete = false;
         foreach ($this->peppers as $pepper_index => $pepper) 
         {
             if ($pepper['id'] == $_POST['id'])
@@ -321,7 +321,7 @@ class peppers {
             }
         }
 
-        if (empty($pepper_to_delete))
+        if ($pepper_to_delete === false)
         {
             echo json_encode([
                 'code'      => 400,
