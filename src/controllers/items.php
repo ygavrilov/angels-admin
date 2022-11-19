@@ -10,6 +10,8 @@ class items {
     private $images_foler_prefix = '../webroot/';
     private $images_folder = 'images';
 
+    private $model_alias = 'items';
+
     private $model = [
         'name' => FILTER_SANITIZE_STRING,
         'comp' => FILTER_SANITIZE_STRING,
@@ -217,7 +219,7 @@ class items {
             "{$this->model_alias}-$id-" . 
             hash_hmac('sha256', time(), $this->model_alias) . 
             '.' .
-            substr($file['name'], strpos($file['name'], '.') + 1)
+            substr($file['name'], strrpos($file['name'], '.') + 1)
         ;
         move_uploaded_file($file['tmp_name'], $this->images_foler_prefix . $image_name);
         return $image_name;
