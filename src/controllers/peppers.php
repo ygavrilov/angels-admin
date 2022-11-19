@@ -290,4 +290,72 @@ class peppers {
         );
         return;
     }
+
+    public function delete()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') 
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'Only POST request is accepted'
+            ]);
+            return;
+        }
+
+        if (array_key_exists('id', $_POST) === false)
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'id must be present'
+            ]);
+            return;
+        }
+
+        $pepper_to_delete = null;
+        foreach ($this->peppers as $pepper_index => $pepper) 
+        {
+            if ($pepper['id'] == $_POST['id'])
+            {
+                $pepper_to_delete = $pepper;
+                break;
+            }
+        }
+
+        if (empty($pepper_to_delete))
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'pepper not found'
+            ]);
+            return;
+        }
+
+        $all_images_deleted = true;
+        foreach ($pepper_to_delete->img as $image_file_name)
+        {
+            try {
+                unlink($image_file_name);
+            } catch (Exception $e) {
+                $all_images_deleted = false;
+            }
+        }
+
+        if ($all_images_deleted)
+        {
+            unset($this->pepper[$_POST['id']]);
+            file_put_contents($this->peppers_file_name, json_encode($this->pepper));
+            echo json_encode([
+                'code'      => 200,
+                'message'   => 'pepper deleted'
+            ]);
+            return;
+        }
+
+        echo json_encode([
+            'code'      => 400,
+            'message'   => 'pepper not deleted as there are errors deleting some images'
+        ]);
+        return;
+
+    }
 }
