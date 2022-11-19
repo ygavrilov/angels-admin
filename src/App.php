@@ -48,6 +48,11 @@ class App {
             'action'        => 'remove_image',
             'require_auth'  => true
         ],
+        '/?q=items/delete/*' => [
+            'controller'    => 'items',
+            'action'        => 'delete',
+            'require_auth'  => true
+        ],
 
         /**
          * 
