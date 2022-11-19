@@ -312,11 +312,13 @@ class peppers {
         }
 
         $pepper_to_delete = false;
+        $this->peppers = (array) $this->peppers;
         foreach ($this->peppers as $pepper_index => $pepper) 
         {
             if ($pepper['id'] == $_POST['id'])
             {
                 $pepper_to_delete = $pepper;
+                $pepper_index_in_array = $pepper_index;
                 break;
             }
         }
@@ -342,7 +344,7 @@ class peppers {
 
         if ($all_images_deleted)
         {
-            unset($this->pepper[$_POST['id']]);
+            unset($this->pepper[$pepper_index_in_array]);
             file_put_contents($this->peppers_file_name, json_encode($this->pepper));
             echo json_encode([
                 'code'      => 200,
