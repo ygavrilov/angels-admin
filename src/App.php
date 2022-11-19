@@ -85,6 +85,11 @@ class App {
             'action'        => 'remove_image',
             'require_auth'  => true
         ],
+        '/?q=peppers/delete' => [
+            'controller'    => 'peppers',
+            'action'        => 'delete',
+            'require_auth'  => true
+        ],
     ];
 
     private $controllers;
