@@ -309,11 +309,13 @@ class items {
         }
 
         $item_to_delete = false;
+        $this->items = (array) $this->items;
         foreach ($this->items as $item_index => $item) 
         {
             if ($item['id'] == $_POST['id'])
             {
                 $item_to_delete = $item;
+                $item_index_in_array = $item_index;
                 break;
             }
         }
@@ -339,7 +341,7 @@ class items {
 
         if ($all_images_deleted)
         {
-            unset($this->items[$_POST['id']]);
+            unset($this->items[$item_index_in_array]);
             file_put_contents($this->items_file_name, json_encode($this->items));
             echo json_encode([
                 'code'      => 200,
