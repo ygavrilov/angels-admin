@@ -242,7 +242,7 @@ class items {
             return;
         }
 
-        $item_index = null;
+        $item_index = false;
         foreach ($this->items as $index => $item)
         {
             if (in_array($image_file_name, $item['img'])) {
@@ -250,14 +250,14 @@ class items {
             }
         }
 
-        if (empty($item_index))
+        if ($item_index === false)
         {
             echo json_encode(
                 [
                     'code'          => 400,
                     'message'       => 'image not found',
                     'file'          => $image_file_name,
-                    'item'          => $item['img']
+                    'item'          => $item
                 ]
             );
             return;

@@ -242,7 +242,7 @@ class peppers {
             return;
         }
 
-        $item_index = null;
+        $item_index = false;
         foreach ($this->peppers as $index => $item)
         {
             if (array_key_exists('img', $item) === false) {
@@ -253,7 +253,7 @@ class peppers {
             }
         }
 
-        if (empty($item_index))
+        if ($item_index === false)
         {
             echo json_encode(
                 [
