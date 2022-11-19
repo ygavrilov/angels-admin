@@ -286,4 +286,72 @@ class items {
         return;
     }
 
+    public function delete()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') 
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'Only POST request is accepted'
+            ]);
+            return;
+        }
+
+        if (array_key_exists('id', $_POST) === false)
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'id must be present'
+            ]);
+            return;
+        }
+
+        $item_to_delete = null;
+        foreach ($this->items as $item_index => $item) 
+        {
+            if ($item['id'] == $_POST['id'])
+            {
+                $item_to_delete = $item;
+                break;
+            }
+        }
+
+        if (empty($item_to_delete))
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'item not found'
+            ]);
+            return;
+        }
+
+        $all_images_deleted = true;
+        foreach ($item_to_delete->img as $image_file_name)
+        {
+            try {
+                unlink($image_file_name);
+            } catch (Exception $e) {
+                $all_images_deleted = false;
+            }
+        }
+
+        if ($all_images_deleted)
+        {
+            unset($this->items[$_POST['id']]);
+            file_put_contents($this->items_file_name, json_encode($this->items));
+            echo json_encode([
+                'code'      => 200,
+                'message'   => 'item deleted'
+            ]);
+            return;
+        }
+
+        echo json_encode([
+            'code'      => 400,
+            'message'   => 'item not deleted as there are errors deleting some images'
+        ]);
+        return;
+
+    }
+
 }
