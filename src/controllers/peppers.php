@@ -344,8 +344,8 @@ class peppers {
 
         if ($all_images_deleted)
         {
-            unset($this->pepper[$pepper_index_in_array]);
-            file_put_contents($this->peppers_file_name, json_encode($this->pepper));
+            unset($this->peppers[$pepper_index_in_array]);
+            file_put_contents($this->peppers_file_name, json_encode($this->peppers));
             echo json_encode([
                 'code'      => 200,
                 'message'   => 'pepper deleted'
