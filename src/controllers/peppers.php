@@ -219,7 +219,7 @@ class peppers {
             "{$this->model_alias}-$id-" . 
             hash_hmac('sha256', time(), $this->model_alias) . 
             '.' .
-            substr($file['name'], strpos($file['name'], '.') + 1)
+            substr($file['name'], strrpos($file['name'], '.') + 1)
         ;
         move_uploaded_file($file['tmp_name'], $this->images_foler_prefix . $image_name);
         return $image_name;
