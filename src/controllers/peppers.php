@@ -37,9 +37,14 @@ class peppers {
             );
             return;
         }
+        $ordered_array_with_ids_as_keys = [];
+        foreach ($this->peppers as $pepper) 
+        {
+            $ordered_array_with_ids_as_keys[$pepper['id']] = $pepper;
+        }
         echo json_encode([
             'code'      => 200,
-            'peppers'   => $this->peppers
+            'peppers'   => $ordered_array_with_ids_as_keys
         ]);
         return;
     }
