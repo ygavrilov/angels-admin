@@ -38,9 +38,14 @@ class items {
             );
             return;
         }
+        $items_with_ids_as_array_keys = [];
+        foreach ($this->items as $item)
+        {
+            $items_with_ids_as_array_keys[$item['id']] = $item;
+        }
         echo json_encode([
             "code" => 200,
-            "items" => $this->items
+            "items" => $items_with_ids_as_array_keys
         ]);
         return;
     }
