@@ -245,6 +245,9 @@ class items {
         $item_index = false;
         foreach ($this->items as $index => $item)
         {
+            if (array_key_exists('img', $item) === false) {
+                continue;
+            }
             if (in_array($image_file_name, $item['img'])) {
                 $item_index = $index;
             }
