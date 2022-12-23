@@ -25,7 +25,7 @@ class peppers {
         $this->peppers = json_decode(file_get_contents($this->peppers_file_name), true);
     }
 
-    public function list()
+    public function list($limit = null)
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'GET') 
         {
@@ -42,6 +42,12 @@ class peppers {
         {
             $ordered_array_with_ids_as_keys[$pepper['id']] = $pepper;
         }
+
+        if ($limit != null)
+        {
+            $ordered_array_with_ids_as_keys = array_slice($ordered_array_with_ids_as_keys, 0, $limit);
+        }
+
         echo json_encode([
             'code'      => 200,
             'peppers'   => $ordered_array_with_ids_as_keys
