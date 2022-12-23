@@ -419,7 +419,7 @@ class items {
             return;
         }
 
-        if ($item_index === 0)
+        if ($item_index_in_array === 0)
         {
             echo json_encode([
                 'code'      => 400,
