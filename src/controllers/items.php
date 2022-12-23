@@ -395,14 +395,19 @@ class items {
 
         $item_to_move_up = false;
         $this->items = (array) $this->items;
+        $indexed_items = [];
+        $index = 0;
         foreach ($this->items as $item_index => $item) 
         {
+            $indexed_items[$index] = $item;
+            
             if ($item['id'] == $_POST['id'])
             {
                 $item_to_move_up = $item;
-                $item_index_in_array = $item_index;
-                break;
+                $item_index_in_array = $index;
             }
+
+            $index++;
         }
 
         if ($item_to_move_up === false)
@@ -424,10 +429,10 @@ class items {
         }
 
         $item_to_move_down = $this->items[$item_index_in_array - 1];
-        $this->items[$item_index_in_array - 1] = $item_to_move_up;
-        $this->items[$item_index_in_array] = $item_to_move_down;
+        $indexed_items[$item_index_in_array - 1] = $item_to_move_up;
+        $indexed_items[$item_index_in_array] = $item_to_move_down;
 
-        file_put_contents($this->items_file_name, json_encode($this->items));
+        file_put_contents($this->items_file_name, json_encode($indexed_items));
         echo json_encode([
             'code'      => 200,
             'message'   => 'item moved up'
