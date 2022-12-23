@@ -372,7 +372,6 @@ class items {
          * must be post
          * must have ID 
          * ID must exist
-         * 
          */
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') 
@@ -436,6 +435,73 @@ class items {
         echo json_encode([
             'code'      => 200,
             'message'   => 'item moved up'
+        ]);
+        return;
+    }
+
+    public function move_down()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') 
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'Only POST request is accepted'
+            ]);
+            return;
+        }
+
+        if (array_key_exists('id', $_POST) === false)
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'id must be present'
+            ]);
+            return;
+        }
+
+        $item_to_move_down = false;
+        $this->items = (array) $this->items;
+        $indexed_items = [];
+        $index = 0;
+        foreach ($this->items as $item_index => $item) 
+        {
+            $indexed_items[$index] = $item;
+            
+            if ($item['id'] == $_POST['id'])
+            {
+                $item_to_move_down = $item;
+                $item_index_in_array = $index;
+            }
+
+            $index++;
+        }
+
+        if ($item_to_move_down === false)
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'item not found'
+            ]);
+            return;
+        }
+
+        if ($item_index_in_array === (count($indexed_items) - 1))
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'item is already last'
+            ]);
+            return;
+        }
+
+        $item_to_move_up = $this->items[$item_index_in_array - 1];
+        $indexed_items[$item_index_in_array + 1] = $item_to_move_down;
+        $indexed_items[$item_index_in_array] = $item_to_move_up;
+
+        file_put_contents($this->items_file_name, json_encode($indexed_items));
+        echo json_encode([
+            'code'      => 200,
+            'message'   => 'item moved down'
         ]);
         return;
     }
