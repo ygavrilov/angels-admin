@@ -427,7 +427,7 @@ class items {
             return;
         }
 
-        $item_to_move_down = $this->items[$item_index_in_array - 1];
+        $item_to_move_down = $indexed_items[$item_index_in_array - 1];
         $indexed_items[$item_index_in_array - 1] = $item_to_move_up;
         $indexed_items[$item_index_in_array] = $item_to_move_down;
 
@@ -494,7 +494,7 @@ class items {
             return;
         }
 
-        $item_to_move_up = $this->items[$item_index_in_array - 1];
+        $item_to_move_up = $indexed_items[$item_index_in_array + 1];
         $indexed_items[$item_index_in_array + 1] = $item_to_move_down;
         $indexed_items[$item_index_in_array] = $item_to_move_up;
 
