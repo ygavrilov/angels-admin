@@ -53,6 +53,16 @@ class App {
             'action'        => 'delete',
             'require_auth'  => true
         ],
+        '/?q=items/move-up' => [
+            'controller'    => 'items',
+            'action'        => 'move_up',
+            'require_auth'  => true
+        ],
+        '/?q=items/move-down' => [
+            'controller'    => 'items',
+            'action'        => 'move_down',
+            'require_auth'  => true
+        ],
 
         /**
          * 
@@ -88,6 +98,16 @@ class App {
         '/?q=peppers/delete' => [
             'controller'    => 'peppers',
             'action'        => 'delete',
+            'require_auth'  => true
+        ],
+        '/?q=peppers/move-up' => [
+            'controller'    => 'peppers',
+            'action'        => 'move_up',
+            'require_auth'  => true
+        ],
+        '/?q=peppers/move-down' => [
+            'controller'    => 'peppers',
+            'action'        => 'move_down',
             'require_auth'  => true
         ],
     ];
