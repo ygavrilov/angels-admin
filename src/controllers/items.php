@@ -26,7 +26,7 @@ class items {
         $this->items = json_decode(file_get_contents($this->items_file_name), true);
     }
 
-    public function list($limit = null)
+    public function list(int $limit = null)
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'GET') 
         {
@@ -46,7 +46,7 @@ class items {
 
         if ($limit != null)
         {
-            $items_with_ids_as_array_keys = array_slice($items_with_ids_as_array_keys, 0, $limit);
+            $items_with_ids_as_array_keys = array_slice($items_with_ids_as_array_keys, 0, $limit, true);
         }
 
         echo json_encode([
