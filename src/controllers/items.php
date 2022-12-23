@@ -366,4 +366,73 @@ class items {
 
     }
 
+    public function move_up()
+    {
+        /**
+         * must be post
+         * must have ID 
+         * ID must exist
+         * 
+         */
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') 
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'Only POST request is accepted'
+            ]);
+            return;
+        }
+
+        if (array_key_exists('id', $_POST) === false)
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'id must be present'
+            ]);
+            return;
+        }
+
+        $item_to_move_up = false;
+        $this->items = (array) $this->items;
+        foreach ($this->items as $item_index => $item) 
+        {
+            if ($item['id'] == $_POST['id'])
+            {
+                $item_to_move_up = $item;
+                $item_index_in_array = $item_index;
+                break;
+            }
+        }
+
+        if ($item_to_move_up === false)
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'item not found'
+            ]);
+            return;
+        }
+
+        if ($item_index === 0)
+        {
+            echo json_encode([
+                'code'      => 400,
+                'message'   => 'item already on top'
+            ]);
+            return;
+        }
+
+        $item_to_move_down = $this->items[$item_index_in_array - 1];
+        $this->items[$item_index_in_array - 1] = $item_to_move_up;
+        $this->items[$item_index_in_array] = $item_to_move_down;
+
+        file_put_contents($this->items_file_name, json_encode($this->items));
+        echo json_encode([
+            'code'      => 200,
+            'message'   => 'item moved up'
+        ]);
+        return;
+    }
+
 }
