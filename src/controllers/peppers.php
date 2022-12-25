@@ -38,9 +38,10 @@ class peppers {
             return;
         }
         $ordered_array_with_ids_as_keys = [];
+        $index_reset = 0;
         foreach ($this->peppers as $pepper) 
         {
-            $ordered_array_with_ids_as_keys[$pepper['id']] = $pepper;
+            $ordered_array_with_ids_as_keys[$index_reset++] = $pepper;
         }
 
         if ($limit != null)

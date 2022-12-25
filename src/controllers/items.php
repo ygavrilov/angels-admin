@@ -39,9 +39,10 @@ class items {
             return;
         }
         $items_with_ids_as_array_keys = [];
+        $index_reset = 0;
         foreach ($this->items as $item)
         {
-            $items_with_ids_as_array_keys[$item['id']] = $item;
+            $items_with_ids_as_array_keys[$index_reset++] = $item;
         }
 
         if ($limit != null)
