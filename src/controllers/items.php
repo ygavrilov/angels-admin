@@ -13,9 +13,9 @@ class items {
     private $model_alias = 'items';
 
     private $model = [
-        'name' => FILTER_SANITIZE_STRING,
-        'comp' => FILTER_SANITIZE_STRING,
-        'desc' => FILTER_SANITIZE_STRING,
+        'name'  => FILTER_SANITIZE_STRING,
+        'comp'  => FILTER_SANITIZE_STRING,
+        'desc'  => false,
         'price' => FILTER_SANITIZE_NUMBER_INT
     ];
 
@@ -185,12 +185,16 @@ class items {
         //  return new record
         
         $new_record = [];
+        $post_data = $_POST;
         foreach ($this->model as $field_name => $field_filter)
         {
-            if (array_key_exists($field_name, $_POST) === false) {
+            if (array_key_exists($field_name, $post_data) === false) {
                 continue;
             }
-            $new_record[$field_name] = filter_var($_POST[$field_name], $field_filter);
+            if (!$field_filter) {
+                $post_data[$field_name] = filter_var($post_data[$field_name], $field_filter);
+            }
+            $new_record[$field_name] = $post_data[$field_name];
         }
 
         $max_id = 1;
