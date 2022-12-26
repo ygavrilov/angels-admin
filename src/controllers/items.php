@@ -141,12 +141,16 @@ class items {
         }
 
         $item_to_edit = (array) $item_to_edit;
+        $post_data = $_POST;
         foreach ($this->model as $field_name => $field_filter)
         {
             if (array_key_exists($field_name, $_POST) === false) {
                 continue;
             }
-            $item_to_edit[$field_name] = filter_var($_POST[$field_name], $field_filter);
+            if (!$field_filter) {
+                $post_data[$field_name] = filter_var($post_data[$field_name], $field_filter);
+            }
+            $item_to_edit[$field_name] = $post_data[$field_name];
         }
         
         if (!empty($_FILES) && $_FILES['file']['error'] == 0)
