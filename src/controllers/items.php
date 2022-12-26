@@ -147,7 +147,7 @@ class items {
             if (array_key_exists($field_name, $_POST) === false) {
                 continue;
             }
-            if (!$field_filter) {
+            if ($field_filter !== false) {
                 $post_data[$field_name] = filter_var($post_data[$field_name], $field_filter);
             }
             $item_to_edit[$field_name] = $post_data[$field_name];
